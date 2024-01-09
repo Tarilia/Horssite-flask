@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "horssite-flask"
+version = "0.1.0"
+description = ""
+authors = ["Tatiana_Garbuzova <tatiannna0697@gmail.com>"]
+readme = "README.md"
+packages = [{include = "horssite_flask"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+flask = "^3.0.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
