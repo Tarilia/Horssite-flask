@@ -1,6 +1,12 @@
-from flask import Flask, render_template, url_for, request
+from flask import Flask, render_template, url_for, request, flash, session, redirect, abort, g
+from dotenv import load_dotenv
+import os
 
+
+load_dotenv()
 app = Flask(__name__)
+
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 menu = [{"name": "Главная", "url": "/"},
         {"name": "Добавить статью", "url": "add"},

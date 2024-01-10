@@ -1,38 +1,73 @@
-html, body {
-    font-famili: 'Arial';
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
+html, body { 
+	font-family: 'Arial';
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	width: 100%;
 }
 
 a {
-    color: #F0E68C;
-    text-decoration: none;
+	color: #0059b2;
+	text-decoration: none;
 }
-
 a:hover {
-    color: #F0E68C;
-    text-decoration: underline;
+	color: #CC0000;
+	text-decoration: underline;
 }
 
-.clear {
-    clear: both;
-}
+.clear {clear: both;}
 
 ul.mainmenu {
-    list-style: none;
-    background: #006400;
-    height: 60px;
-    margin: 0;
-    padding: 0;
-    color: #fdc073;
-    font-size: 20px;
-    overflow: hidden;
+	list-style: none;
+	background: #C0C0C0;
+	height: 60px;
+	margin: 0;
+	padding: 0;
+	color: #2F4F4F;
+	font-size: 20px;
+	overflow: hidden;
 }
-
 ul.mainmenu li {
-    float: left;
-    margin: 18px 40px 0 50px;
+	float: left;
+	margin: 18px 40px 0 50px;
+}
+ul.mainmenu li.last {float: right;}
+
+ul.mainmenu li a {
+	color: #2F4F4F;
+	text-decoration: none;
+}
+ul.mainmenu li a:hover {
+	color: #FDA83D;
 }
 
+div.content {
+	margin: 10px;
+}
+
+.form-contact label {
+	display: inline-block; 
+	min-width: 80px;
+        margin-left: 30px;
+}
+.form-contact p {margin: 10px 0 10px 0;}
+.form-contact input[type=submit], textarea {
+	font-size: 16px;
+}
+
+.form-contact .invalid {
+	background: #FF9898;
+}
+.form-contact .invalid-feedback {
+	color: #CC0000;
+}
+
+.flash {padding: 10px;}
+.flash.success {
+	border: 1px solid #21DB56;
+	background: #AEFFC5;
+}
+.flash.error {
+	border: 1px solid #FF4343;
+	background: #FF9C9C;
+}
