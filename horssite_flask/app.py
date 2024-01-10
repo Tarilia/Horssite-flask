@@ -39,7 +39,14 @@ def pageNotFount(error):
 def login():
     if 'userLogged' in session:
         return redirect(url_for('profile', username=session['userLogged']))
-    elif request.method == 'POST' and request.form['username'] == 'Татьяна' and request.form['psw'] =="123":
+    elif request.method == 'POST' and request.form['username'] == 'admin' and request.form['psw'] =="1234":
         session['userLogged'] = request.form['username']
         return redirect(url_for('profile', username=session['userLogged']))
     return render_template('login.html', title="Авторизация", menu=menu)
+
+
+@app.route('/profile/<username>')
+def profile(username):
+    if 'userLogged' not in session or session['userLogged'] != username:
+        abort(401)
+    return f"Пользователь: {username}"
