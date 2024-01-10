@@ -11,7 +11,7 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 menu = [{"name": "Главная", "url": "/"},
         {"name": "Добавить статью", "url": "add"},
         {"name": "Обратная связь", "url": "contact"},
-        {"name": "Вход", "url": "entrance"}]
+        {"name": "Вход", "url": "login"}]
 
 
 @app.route('/')
@@ -28,3 +28,18 @@ def contact():
         else:
             flash('Ошибка отправки', category='error')
     return render_template('contact.html', title="Обратная связь", menu=menu)
+
+
+@app.errorhandler(404)
+def pageNotFount(error):
+    return render_template('page404.html', title="Страница не найдена", menu=menu), 404
+
+
+@app.route('/login', methods=["POST", "GET"])
+def login():
+    if 'userLogged' in session:
+        return redirect(url_for('profile', username=session['userLogged']))
+    elif request.method == 'POST' and request.form['username'] == 'Татьяна' and request.form['psw'] =="123":
+        session['userLogged'] = request.form['username']
+        return redirect(url_for('profile', username=session['userLogged']))
+    return render_template('login.html', title="Авторизация", menu=menu)
