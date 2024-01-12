@@ -24,3 +24,9 @@ def get_menu(cur):
     cur.execute("SELECT * FROM mainmenu")
     menu = cur.fetchall()
     return menu
+
+
+@database_connection
+def add_posts(cur, title, text, time):
+    cur.execute("INSERT INTO posts(title, text, time) VALUES(%s, %s, %s)",
+                 (title, text, time))
