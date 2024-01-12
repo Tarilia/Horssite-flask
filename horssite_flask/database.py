@@ -20,3 +20,7 @@ def database_connection(func):
 
 
 @database_connection
+def get_menu(cur):
+    cur.execute("SELECT * FROM mainmenu")
+    menu = cur.fetchall()
+    return menu
