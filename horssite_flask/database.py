@@ -21,12 +21,20 @@ def database_connection(func):
 
 @database_connection
 def get_menu(cur):
-    cur.execute("SELECT * FROM mainmenu")
-    menu = cur.fetchall()
-    return menu
+    try:
+        cur.execute("SELECT * FROM mainmenu")
+        menu = cur.fetchall()
+        return menu
+    except:
+        print("Ошибка чтения из БД")
+    return []
 
 
 @database_connection
 def add_posts(cur, title, text, time):
-    cur.execute("INSERT INTO posts(title, text, time) VALUES(%s, %s, %s)",
-                 (title, text, time))
+    try:
+        cur.execute("INSERT INTO posts(title, text, time) VALUES(%s, %s, %s)",
+                     (title, text, time))
+    except:
+        print("Ошибка добавления статьи в БД ")
+        return False
