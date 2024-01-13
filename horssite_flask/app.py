@@ -4,7 +4,7 @@ import os
 import math
 import time
 
-from horssite_flask.database import get_menu, add_posts, get_post
+from horssite_flask.database import get_menu, add_posts, get_post, get_all_posts
 
 
 load_dotenv()
@@ -16,7 +16,8 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 @app.route('/')
 def index():
     menu = get_menu()
-    return render_template('index.html', menu=menu)
+    posts = get_all_posts()
+    return render_template('index.html', menu=menu, posts=posts)
 
 
 @app.route("/add_post", methods=["POST", "GET"])
@@ -37,7 +38,8 @@ def add_post():
 @app.route("/post/<int:id_post>")
 def show_post(id_post):
     menu = get_menu()
-    title, post = get_post(id_post)
+    title = get_post(id_post)[0]
+    post = get_post(id_post)[1]
     if not title:
         abort(404)
     return render_template('post.html', menu=menu, title=title, post=post)
