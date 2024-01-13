@@ -4,7 +4,7 @@ import os
 import math
 import time
 
-from horssite_flask.database import get_menu, add_posts
+from horssite_flask.database import get_menu, add_posts, get_post
 
 
 load_dotenv()
@@ -32,3 +32,12 @@ def add_post():
         else:
             flash('Ошибка добавления статьи', category='error')
     return render_template('add_post.html', menu=menu, title="Добавление статьи")
+
+
+@app.route("/post/<int:id_post>")
+def show_post(id_post):
+    menu = get_menu()
+    title, post = get_post(id_post)
+    if not title:
+        abort(404)
+    return render_template('post.html', menu=menu, title=title, post=post)

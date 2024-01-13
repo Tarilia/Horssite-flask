@@ -34,7 +34,15 @@ def get_menu(cur):
 def add_posts(cur, title, text, time):
     try:
         cur.execute("INSERT INTO posts(title, text, time) VALUES(%s, %s, %s)",
-                     (title, text, time))
+                    (title, text, time))
     except:
         print("Ошибка добавления статьи в БД ")
         return False
+
+
+@database_connection
+def get_post(cur, post_id):
+    cur.execute(f"SELECT title, text FROM posts WHERE id = {post_id} LIMIT 1")
+    result = cur.fetchone()
+    if result:
+        return result
