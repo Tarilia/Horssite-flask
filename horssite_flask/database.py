@@ -42,14 +42,22 @@ def add_posts(cur, title, text, time):
 
 @database_connection
 def get_post(cur, post_id):
-    cur.execute(f"SELECT title, text FROM posts WHERE id = {post_id} LIMIT 1")
-    result = cur.fetchone()
-    if result:
-        return result
+    try:
+        cur.execute(f"SELECT title, text FROM posts WHERE id = {post_id} LIMIT 1")
+        result = cur.fetchone()
+        if result:
+            return result
+    except:
+        print("Ошибка добавления статьи из БД ")
+        return False, False
 
 
 @database_connection
 def get_all_posts(cur):
-    cur.execute("SELECT id, title, text FROM posts ORDER BY time DESC")
-    result = cur.fetchall()
-    return result
+    try:
+        cur.execute("SELECT id, title, text FROM posts ORDER BY time DESC")
+        result = cur.fetchall()
+        return result
+    except:
+        print("Ошибка получения статьи из БД ")
+    return []
