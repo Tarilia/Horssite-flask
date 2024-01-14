@@ -61,3 +61,14 @@ def get_all_posts(cur):
     except:
         print("Ошибка получения статьи из БД ")
     return []
+
+
+@database_connection
+def add_user(cur, name, email, psw, time):
+    try:
+        cur.execute("INSERT INTO users(name, email, psw, time) VALUES(%s, %s, %s, %s)",
+                    (name, email, psw, time,))
+    except:
+        print("Ошибка добавления пользователя в БД ")
+        return False
+    return True
