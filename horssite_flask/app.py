@@ -1,11 +1,13 @@
-from flask import Flask, render_template, url_for, request, flash, session, redirect, abort
+from flask import (Flask, render_template, url_for,
+                   request, flash, session, redirect, abort)
 from dotenv import load_dotenv
 import os
 import math
 import time
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from horssite_flask.database import get_menu, add_posts, get_post, get_all_posts, add_user
+from horssite_flask.database import (get_menu, add_posts, get_post,
+                                     get_all_posts, add_user)
 
 
 load_dotenv()
@@ -33,7 +35,8 @@ def add_post():
             flash('Статья добавлена успешно', category='success')
         else:
             flash('Ошибка добавления статьи', category='error')
-    return render_template('add_post.html', menu=menu, title="Добавление статьи")
+    return render_template('add_post.html', menu=menu,
+                           title="Добавление статьи")
 
 
 @app.route("/post/<int:id_post>")
@@ -70,5 +73,5 @@ def register():
             else:
                 flash("Ошибка при добавлении в БД", "error")
         else:
-             flash("Неверно заполнены поля", "error")
+            flash("Неверно заполнены поля", "error")
     return render_template("register.html", menu=menu, title="Регистрация")

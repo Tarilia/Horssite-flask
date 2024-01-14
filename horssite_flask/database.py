@@ -25,8 +25,8 @@ def get_menu(cur):
         cur.execute("SELECT * FROM mainmenu")
         menu = cur.fetchall()
         return menu
-    except:
-        print("Ошибка чтения из БД")
+    except Exception as error:
+        print("Ошибка чтения из БД" + str(error))
     return []
 
 
@@ -35,20 +35,21 @@ def add_posts(cur, title, text, time):
     try:
         cur.execute("INSERT INTO posts(title, text, time) VALUES(%s, %s, %s)",
                     (title, text, time))
-    except:
-        print("Ошибка добавления статьи в БД ")
+    except Exception as error:
+        print("Ошибка добавления статьи в БД" + str(error))
         return False
 
 
 @database_connection
 def get_post(cur, post_id):
     try:
-        cur.execute(f"SELECT title, text FROM posts WHERE id = {post_id} LIMIT 1")
+        cur.execute(f"SELECT title, text FROM posts \
+                    WHERE id = {post_id} LIMIT 1")
         result = cur.fetchone()
         if result:
             return result
-    except:
-        print("Ошибка добавления статьи из БД ")
+    except Exception as error:
+        print("Ошибка добавления статьи из БД" + str(error))
         return False, False
 
 
@@ -58,17 +59,18 @@ def get_all_posts(cur):
         cur.execute("SELECT id, title, text FROM posts ORDER BY time DESC")
         result = cur.fetchall()
         return result
-    except:
-        print("Ошибка получения статьи из БД ")
+    except Exception as error:
+        print("Ошибка получения статьи из БД" + str(error))
     return []
 
 
 @database_connection
 def add_user(cur, name, email, psw, time):
     try:
-        cur.execute("INSERT INTO users(name, email, psw, time) VALUES(%s, %s, %s, %s)",
+        cur.execute("INSERT INTO users(name, email, psw, time) \
+                    VALUES(%s, %s, %s, %s)",
                     (name, email, psw, time,))
-    except:
-        print("Ошибка добавления пользователя в БД ")
+    except Exception as error:
+        print("Ошибка добавления пользователя в БД" + str(error))
         return False
     return True
