@@ -5,10 +5,13 @@ import os
 import math
 import time
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from flask_login import (LoginManager, login_user, login_required, logout_user,
+                         current_user)
 
+from horssite_flask.userlogin import UserLogin
 from horssite_flask.database import (get_menu, add_posts, get_post,
-                                     get_all_posts, add_user)
+                                     get_all_posts, add_user, get_user,
+                                     get_email)
 
 
 load_dotenv()
@@ -20,6 +23,12 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 login_manager.login_message = "Авторизуйтесь для доступа к закрытым страницам"
 login_manager.login_message_category = "success"
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    print("load_user")
+    return UserLogin().fromDB(user_id)
 
 
 @app.route('/')
@@ -46,6 +55,7 @@ def add_post():
 
 
 @app.route("/post/<int:id_post>")
+@login_required
 def show_post(id_post):
     menu = get_menu()
     title = get_post(id_post)[0]
@@ -58,6 +68,15 @@ def show_post(id_post):
 @app.route("/login", methods=["POST", "GET"])
 def login():
     menu = get_menu()
+    if request.method == "POST":
+        email = request.form.get('email')
+        psw = request.form.get('psw')
+        user = get_email(email)
+        if user and check_password_hash(user['psw'], psw):
+            userlogin = UserLogin().create(user)
+            login_user(userlogin)
+            return redirect(url_for("index"))
+        flash("Неверная пара логин/пароль", "error")
     return render_template("login.html", menu=menu, title="Авторизация")
 
 
