@@ -74,3 +74,29 @@ def add_user(cur, name, email, psw, time):
         print("Ошибка добавления пользователя в БД" + str(error))
         return False
     return True
+
+
+@database_connection
+def get_user(cur, user_id):
+    try:
+        cur.execute(f"SELECT * FROM users WHERE id = {user_id} LIMIT 1", (user_id,))
+        result = cur.fetchone()
+        if result:
+            return result
+    except Exception as error:
+        print("Ошибка получения данных из БД" + str(error))
+    return False
+
+
+@database_connection
+def get_email(cur, email):
+    try:
+        cur.execute(f"SELECT * FROM users WHERE email = '{email}' LIMIT 1", (email,))
+        result = cur.fetchone()
+        if not result:
+            print("Пользователь не найден")
+            return False
+        return result
+    except Exception as error:
+        print("Ошибка получения данных из БД" + str(error))
+    return False
