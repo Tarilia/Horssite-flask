@@ -5,6 +5,7 @@ import os
 import math
 import time
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 
 from horssite_flask.database import (get_menu, add_posts, get_post,
                                      get_all_posts, add_user)
@@ -14,6 +15,11 @@ load_dotenv()
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
+login_manager.login_message = "Авторизуйтесь для доступа к закрытым страницам"
+login_manager.login_message_category = "success"
 
 
 @app.route('/')
