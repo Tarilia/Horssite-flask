@@ -67,6 +67,8 @@ def show_post(id_post):
 @app.route("/login", methods=["POST", "GET"])
 def login():
     menu = get_menu()
+    if current_user.is_authenticated:
+        return redirect(url_for('profile'))
     if request.method == "POST":
         email = request.form.get('email')
         psw = request.form.get('psw')
@@ -75,7 +77,7 @@ def login():
             userlogin = UserLogin().create(user)
             rm = True if request.form.get('remainme') else False
             login_user(userlogin, remember=rm)
-            return redirect(url_for("profile"))
+            return redirect(request.args.get("next") or url_for("profile"))
         flash("Неверная пара логин/пароль", "error")
     return render_template("login.html", menu=menu, title="Авторизация")
 
