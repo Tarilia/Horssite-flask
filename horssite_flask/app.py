@@ -27,7 +27,6 @@ login_manager.login_message_category = "success"
 
 @login_manager.user_loader
 def load_user(user_id):
-    print("load_user")
     return UserLogin().fromDB(user_id)
 
 
@@ -75,7 +74,7 @@ def login():
         if user and check_password_hash(user['psw'], psw):
             userlogin = UserLogin().create(user)
             login_user(userlogin)
-            return redirect(url_for("index"))
+            return redirect(url_for("profile"))
         flash("Неверная пара логин/пароль", "error")
     return render_template("login.html", menu=menu, title="Авторизация")
 
@@ -100,3 +99,18 @@ def register():
         else:
             flash("Неверно заполнены поля", "error")
     return render_template("register.html", menu=menu, title="Регистрация")
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash("Вы вышли из аккаунта", "success")
+    return redirect(url_for('login'))
+
+
+@app.route('/profile')
+@login_required
+def profile():
+    return f"""<p><a href="{url_for('logout')}">Выйти из профиля</a>
+                <p>user info: {current_user.get_id()}"""
