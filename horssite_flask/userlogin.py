@@ -27,7 +27,9 @@ class UserLogin(UserMixin):
         if not self.__user['avatar']:
             try:
                 with app.open_resource(app.root_path +
-                                       url_for('static', filename='images/default.png'), "rb") as f:
+                                       url_for('static',
+                                               filename='images/default.png'),
+                                       "rb") as f:
                     img = f.read()
             except FileNotFoundError as e:
                 print("Не найден аватар по умолчанию: "+str(e))

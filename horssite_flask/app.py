@@ -10,8 +10,8 @@ from flask_login import (LoginManager, login_user, login_required, logout_user,
 
 from horssite_flask.userlogin import UserLogin
 from horssite_flask.database import (get_menu, add_posts, get_post,
-                                     get_all_posts, add_user, get_user,
-                                     get_email)
+                                     get_all_posts, add_user,
+                                     get_email, update_avatar)
 
 
 load_dotenv()
@@ -145,7 +145,7 @@ def upload():
                     flash("Ошибка обновления аватара", "error")
                 flash("Аватар обновлен", "success")
             except FileNotFoundError as e:
-                flash("Ошибка чтения файла", "error")
+                flash("Ошибка чтения файла" + str(e), "error")
         else:
             flash("Ошибка обновления аватара", "error")
     return redirect(url_for('profile'))

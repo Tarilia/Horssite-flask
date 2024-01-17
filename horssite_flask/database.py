@@ -79,7 +79,8 @@ def add_user(cur, name, email, psw, time):
 @database_connection
 def get_user(cur, user_id):
     try:
-        cur.execute(f"SELECT * FROM users WHERE id = {user_id} LIMIT 1", (user_id,))
+        cur.execute(f"SELECT * FROM users WHERE id = {user_id} LIMIT 1",
+                    (user_id,))
         result = cur.fetchone()
         if result:
             return result
@@ -91,7 +92,8 @@ def get_user(cur, user_id):
 @database_connection
 def get_email(cur, email):
     try:
-        cur.execute(f"SELECT * FROM users WHERE email = '{email}' LIMIT 1", (email,))
+        cur.execute(f"SELECT * FROM users WHERE email = '{email}' LIMIT 1",
+                    (email,))
         result = cur.fetchone()
         if not result:
             print("Пользователь не найден")
@@ -107,7 +109,8 @@ def update_avatar(cur, avatar, user_id):
     if not avatar:
         return False
     try:
-        cur.execute(f"UPDATE users SET avatar = %s WHERE id = %s", (avatar, user_id))
+        cur.execute("UPDATE users SET avatar = %s WHERE id = %s",
+                    (avatar, user_id))
     except Exception as error:
         print("Ошибка обновления аватара в БД:" + str(error))
         return False
