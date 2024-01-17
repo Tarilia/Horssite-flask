@@ -1,4 +1,4 @@
-from flask import (Flask, render_template, url_for,
+from flask import (Flask, render_template, url_for, make_response,
                    request, flash, session, redirect, abort)
 from dotenv import load_dotenv
 import os
@@ -18,6 +18,8 @@ load_dotenv()
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+
+MAX_CONTENT_LENGTH = 1024 * 1024
 
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
@@ -115,5 +117,35 @@ def logout():
 @app.route('/profile')
 @login_required
 def profile():
-    return f"""<p><a href="{url_for('logout')}">Выйти из профиля</a>
-                <p>user info: {current_user.get_id()}"""
+    menu = get_menu()
+    return render_template("profile.html", menu=menu, title="Профиль")
+
+
+@app.route('/userava')
+@login_required
+def userava():
+    img = current_user.getAvatar(app)
+    if not img:
+        return ""
+    get_img = make_response(img)
+    get_img.headers['Content-Type'] = 'image/png'
+    return get_img
+
+
+@app.route('/upload', methods=["POST", "GET"])
+@login_required
+def upload():
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and current_user.verifyExt(file.filename):
+            try:
+                img = file.read()
+                res = update_avatar(img, current_user.get_id())
+                if not res:
+                    flash("Ошибка обновления аватара", "error")
+                flash("Аватар обновлен", "success")
+            except FileNotFoundError as e:
+                flash("Ошибка чтения файла", "error")
+        else:
+            flash("Ошибка обновления аватара", "error")
+    return redirect(url_for('profile'))

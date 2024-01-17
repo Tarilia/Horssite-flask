@@ -100,3 +100,15 @@ def get_email(cur, email):
     except Exception as error:
         print("Ошибка получения данных из БД" + str(error))
     return False
+
+
+@database_connection
+def update_avatar(cur, avatar, user_id):
+    if not avatar:
+        return False
+    try:
+        cur.execute(f"UPDATE users SET avatar = %s WHERE id = %s", (avatar, user_id))
+    except Exception as error:
+        print("Ошибка обновления аватара в БД:" + str(error))
+        return False
+    return True
