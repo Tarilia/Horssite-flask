@@ -73,7 +73,8 @@ def login():
         user = get_email(email)
         if user and check_password_hash(user['psw'], psw):
             userlogin = UserLogin().create(user)
-            login_user(userlogin)
+            rm = True if request.form.get('remainme') else False
+            login_user(userlogin, remember=rm)
             return redirect(url_for("profile"))
         flash("Неверная пара логин/пароль", "error")
     return render_template("login.html", menu=menu, title="Авторизация")
