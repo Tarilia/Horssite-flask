@@ -8,7 +8,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import (LoginManager, login_user, login_required, logout_user,
                          current_user)
 
-from horssite_flask.forms import LoginForm
+from horssite_flask.forms import LoginForm, RegisterForm
 from horssite_flask.userlogin import UserLogin
 from horssite_flask.database import (get_menu, add_posts, get_post,
                                      get_all_posts, add_user,
@@ -89,23 +89,20 @@ def login():
 @app.route("/register", methods=["POST", "GET"])
 def register():
     menu = get_menu()
-    if request.method == "POST":
+    form = RegisterForm()
+    if form.validate_on_submit():
         tm = math.floor(time.time())
-        name = request.form.get('name')
-        email = request.form.get('email')
+        email = form.email.data
+        name = form.name.data
         psw = request.form.get('psw')
-        psw2 = request.form.get('psw2')
-        if len(name) > 4 and len(email) > 4 and len(psw) > 4 and psw == psw2:
-            hash = generate_password_hash(psw)
-            result = add_user(name, email, hash, tm)
-            if result:
-                flash("Вы успешно зарегистрированы", "success")
-                return redirect(url_for('login'))
-            else:
-                flash("Ошибка при добавлении в БД", "error")
+        hash = generate_password_hash(psw)
+        result = add_user(name, email, hash, tm)
+        if result:
+            flash("Вы успешно зарегистрированы", "success")
+            return redirect(url_for('login'))
         else:
-            flash("Неверно заполнены поля", "error")
-    return render_template("register.html", menu=menu, title="Регистрация")
+            flash("Ошибка при добавлении в БД", "error")
+    return render_template("register.html", menu=menu, title="Регистрация", form=form)
 
 
 @app.route('/logout')
