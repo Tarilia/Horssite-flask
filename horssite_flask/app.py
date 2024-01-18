@@ -8,6 +8,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import (LoginManager, login_user, login_required, logout_user,
                          current_user)
 
+from horssite_flask.forms import LoginForm
 from horssite_flask.userlogin import UserLogin
 from horssite_flask.database import (get_menu, add_posts, get_post,
                                      get_all_posts, add_user,
@@ -71,17 +72,18 @@ def login():
     menu = get_menu()
     if current_user.is_authenticated:
         return redirect(url_for('profile'))
-    if request.method == "POST":
-        email = request.form.get('email')
-        psw = request.form.get('psw')
+    form = LoginForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        psw = form.psw.data
         user = get_email(email)
         if user and check_password_hash(user['psw'], psw):
             userlogin = UserLogin().create(user)
-            rm = True if request.form.get('remainme') else False
+            rm = form.remember.data
             login_user(userlogin, remember=rm)
             return redirect(request.args.get("next") or url_for("profile"))
         flash("Неверная пара логин/пароль", "error")
-    return render_template("login.html", menu=menu, title="Авторизация")
+    return render_template("login.html", menu=menu, title="Авторизация", form=form)
 
 
 @app.route("/register", methods=["POST", "GET"])
