@@ -56,6 +56,14 @@ div.content {
 }
 
 .form-contact .invalid {
+	display: inline-block;
+	background: #FF9898;
+}
+.form-contact .invalid-feedback {
+	color: #CC0000;
+}
+
+.form-contact .invalid {
 	background: #FF9898;
 }
 .form-contact .invalid-feedback {
