@@ -8,6 +8,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import (LoginManager, login_user, login_required, logout_user,
                          current_user)
 
+from horssite_flask.admin.admin import admin
 from horssite_flask.forms import LoginForm, RegisterForm
 from horssite_flask.userlogin import UserLogin
 from horssite_flask.database import (get_menu, add_posts, get_post,
@@ -19,6 +20,8 @@ load_dotenv()
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+
+app.register_blueprint(admin, url_prefix='/admin')
 
 MAX_CONTENT_LENGTH = 1024 * 1024
 
