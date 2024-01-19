@@ -1,8 +1,15 @@
 from flask import (Blueprint, render_template, url_for,
-                   redirect, session, request, flash, g)
+                   redirect, session, request, flash)
+
+from admin.database_admin import get_list
 
 
 admin = Blueprint('admin', __name__, template_folder='templates', static_folder='static')
+
+menu = [{'url': '.index', 'title': 'Панель'},
+        {'url': '.listusers', 'title': 'Список пользователей'},
+        {'url': '.listpubs', 'title': 'Список статей'},
+        {'url': '.logout', 'title': 'Выйти'}]
 
 
 def isLogged():
@@ -43,3 +50,12 @@ def logout():
         return redirect(url_for('.login'))
     logout_admin()
     return redirect(url_for('.login'))
+
+
+@admin.route('/list-pubs')
+def listpubs():
+    if not isLogged():
+        return redirect(url_for('.login'))
+    list_post = get_list()
+    return render_template('admin/listpubs.html', title='Список статей',
+                           menu=menu, list=list_post)
