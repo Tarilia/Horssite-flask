@@ -28,12 +28,18 @@ def index():
 def login():
     if isLogged():
         return redirect(url_for('.index'))
-
     if request.method == "POST":
         if request.form['user'] == "admin" and request.form['psw'] == "12345":
             login_admin()
             return redirect(url_for('.index'))
         else:
             flash("Неверная пара логин/пароль", "error")
-
     return render_template('admin/login.html', title='Админ-панель')
+
+
+@admin.route('/logout', methods=["POST", "GET"])
+def logout():
+    if not isLogged():
+        return redirect(url_for('.login'))
+    logout_admin()
+    return redirect(url_for('.login'))
