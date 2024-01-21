@@ -1,15 +1,12 @@
 from flask import (Blueprint, render_template, url_for,
                    redirect, session, request, flash)
 
-from horssite_flask.admin.database_admin import get_list, get_users
+from horssite_flask.admin.database_admin import (get_list, get_users,
+                                                 get_admin_menu)
 
 
-admin = Blueprint('admin', __name__, template_folder='templates', static_folder='static')
-
-menu = [{'url': '.index', 'title': 'Панель'},
-        {'url': '.listusers', 'title': 'Список пользователей'},
-        {'url': '.listpubs', 'title': 'Список статей'},
-        {'url': '.logout', 'title': 'Выйти'}]
+admin = Blueprint('admin', __name__, template_folder='templates',
+                  static_folder='static')
 
 
 def isLogged():
@@ -26,9 +23,11 @@ def logout_admin():
 
 @admin.route('/')
 def index():
+    menu = get_admin_menu()
     if not isLogged():
         return redirect(url_for('.login'))
-    return render_template('admin/index.html', menu=menu, title='Админ-панель')
+    return render_template('admin/index.html', menu=menu,
+                           title='Админ-панель')
 
 
 @admin.route('/login', methods=["POST", "GET"])
@@ -54,6 +53,7 @@ def logout():
 
 @admin.route('/list-pubs')
 def listpubs():
+    menu = get_admin_menu()
     if not isLogged():
         return redirect(url_for('.login'))
     list_post = get_list()
@@ -63,8 +63,10 @@ def listpubs():
 
 @admin.route('/list-users')
 def listusers():
+    menu = get_admin_menu()
     if not isLogged():
         return redirect(url_for('.login'))
     list_users = get_users()
-    return render_template('admin/listusers.html', title='Список пользователей',
+    return render_template('admin/listusers.html',
+                           title='Список пользователей',
                            menu=menu, list=list_users)

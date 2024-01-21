@@ -9,7 +9,7 @@
 {% for p in posts %}
 <li>
 <p class="title"><a href="{{ url_for('show_post', id_post=p.id)}}">{{p.title}}</a></p>
-<p class="annonce">{{ p.text[:50] | striptags  }}</p>
+<p class="annonce">{{ p.text[:150] | striptags  }}</p>
 </li>
 {% endfor %}
 </ul>

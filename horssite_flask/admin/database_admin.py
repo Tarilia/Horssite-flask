@@ -20,13 +20,24 @@ def database_connection(func):
 
 
 @database_connection
+def get_admin_menu(cur):
+    try:
+        cur.execute("SELECT * FROM adminmenu")
+        menu = cur.fetchall()
+        return menu
+    except Exception as error:
+        print("Ошибка чтения из БД" + str(error))
+    return []
+
+
+@database_connection
 def get_list(cur):
     try:
         cur.execute("SELECT id, title, text FROM posts ORDER BY time DESC")
         result = cur.fetchall()
         return result
-    except:
-        print("Ошибка получения статьи из БД")
+    except Exception as error:
+        print("Ошибка получения статьи из БД" + str(error))
     return []
 
 
@@ -36,6 +47,6 @@ def get_users(cur):
         cur.execute("SELECT name, email FROM users ORDER BY time DESC")
         result = cur.fetchall()
         return result
-    except:
-        print("Ошибка получения пользователей из БД ")
+    except Exception as error:
+        print("Ошибка получения пользователей из БД " + str(error))
     return []
