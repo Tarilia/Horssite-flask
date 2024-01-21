@@ -28,3 +28,14 @@ def get_list(cur):
     except:
         print("Ошибка получения статьи из БД")
     return []
+
+
+@database_connection
+def get_users(cur):
+    try:
+        cur.execute("SELECT name, email FROM users ORDER BY time DESC")
+        result = cur.fetchall()
+        return result
+    except:
+        print("Ошибка получения пользователей из БД ")
+    return []

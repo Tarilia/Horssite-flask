@@ -1,7 +1,7 @@
 from flask import (Blueprint, render_template, url_for,
                    redirect, session, request, flash)
 
-from admin.database_admin import get_list
+from horssite_flask.admin.database_admin import get_list, get_users
 
 
 admin = Blueprint('admin', __name__, template_folder='templates', static_folder='static')
@@ -59,3 +59,12 @@ def listpubs():
     list_post = get_list()
     return render_template('admin/listpubs.html', title='Список статей',
                            menu=menu, list=list_post)
+
+
+@admin.route('/list-users')
+def listusers():
+    if not isLogged():
+        return redirect(url_for('.login'))
+    list_users = get_users()
+    return render_template('admin/listusers.html', title='Список пользователей',
+                           menu=menu, list=list_users)
