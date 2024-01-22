@@ -26,7 +26,7 @@ def get_menu(cur):
         menu = cur.fetchall()
         return menu
     except Exception as error:
-        print("Ошибка чтения из БД" + str(error))
+        print("Ошибка чтения из БД: " + str(error))
     return []
 
 
@@ -36,17 +36,18 @@ def add_posts(cur, title, text, time):
         cur.execute("INSERT INTO posts(title, text, time) VALUES(%s, %s, %s)",
                     (title, text, time))
     except Exception as error:
-        print("Ошибка добавления статьи в БД" + str(error))
+        print("Ошибка добавления статьи в БД: " + str(error))
         return False
 
 
 @database_connection
 def update_posts(cur, title, text, time, post_id):
     try:
-        cur.execute("UPDATE posts SET title = %s, text = %s, time = %s WHERE id = %s",
+        cur.execute("UPDATE posts SET title = %s, text = %s, \
+                    time = %s WHERE id = %s",
                     (title, text, time, post_id))
-    except:
-        print("Ошибка обновления статьи в БД:")
+    except Exception as error:
+        print("Ошибка обновления статьи в БД: " + str(error))
         return False
     return True
 
@@ -57,8 +58,8 @@ def del_post(cur, post_id):
         cur.execute("DELETE FROM posts WHERE id = %s", (post_id,))
         result = cur.fetchone()
         return result
-    except:
-        print("Ошибка чтения из БД")
+    except Exception as error:
+        print("Ошибка удаления статьи из БД: " + str(error))
         return False
 
 
@@ -71,7 +72,7 @@ def get_post(cur, post_id):
         if result:
             return result
     except Exception as error:
-        print("Ошибка добавления статьи из БД" + str(error))
+        print("Ошибка добавления статьи из БД: " + str(error))
         return False, False
 
 
@@ -82,7 +83,7 @@ def get_all_posts(cur):
         result = cur.fetchall()
         return result
     except Exception as error:
-        print("Ошибка получения статьи из БД" + str(error))
+        print("Ошибка получения статьи из БД: " + str(error))
     return []
 
 
@@ -93,7 +94,7 @@ def add_user(cur, name, email, psw, time):
                     VALUES(%s, %s, %s, %s)",
                     (name, email, psw, time,))
     except Exception as error:
-        print("Ошибка добавления пользователя в БД" + str(error))
+        print("Ошибка добавления пользователя в БД: " + str(error))
         return False
     return True
 
@@ -107,7 +108,7 @@ def get_user(cur, user_id):
         if result:
             return result
     except Exception as error:
-        print("Ошибка получения данных из БД" + str(error))
+        print("Ошибка получения данных из БД: " + str(error))
     return False
 
 
@@ -122,7 +123,7 @@ def get_email(cur, email):
             return False
         return result
     except Exception as error:
-        print("Ошибка получения данных из БД" + str(error))
+        print("Ошибка получения данных из БД: " + str(error))
     return False
 
 
@@ -134,6 +135,6 @@ def update_avatar(cur, avatar, user_id):
         cur.execute("UPDATE users SET avatar = %s WHERE id = %s",
                     (avatar, user_id))
     except Exception as error:
-        print("Ошибка обновления аватара в БД:" + str(error))
+        print("Ошибка обновления аватара в БД: " + str(error))
         return False
     return True

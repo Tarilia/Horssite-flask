@@ -1,5 +1,5 @@
 from flask import (Flask, render_template, url_for, make_response,
-                   request, flash, session, redirect, abort)
+                   request, flash, redirect, abort)
 from dotenv import load_dotenv
 import os
 import math
@@ -69,7 +69,8 @@ def show_post(id_post):
     post = get_post(id_post)[1]
     if not title:
         abort(404)
-    return render_template('post.html', menu=menu, title=title, id_post=id_post, post=post)
+    return render_template('post.html', menu=menu, title=title,
+                           id_post=id_post, post=post)
 
 
 @app.route("/post/<int:id_post>/update", methods=["POST", "GET"])
@@ -86,7 +87,8 @@ def update_post(id_post):
             flash('Статья добавлена успешно', category='success')
         else:
             flash('Ошибка добавления статьи', category='error')
-    return render_template('update_post.html', menu=menu, title="Редактирование статьи")
+    return render_template('update_post.html', menu=menu,
+                           title="Редактирование статьи")
 
 
 @app.route("/post/<int:id_post>/delete")
@@ -112,7 +114,8 @@ def login():
             login_user(userlogin, remember=rm)
             return redirect(request.args.get("next") or url_for("profile"))
         flash("Неверная пара логин/пароль", "error")
-    return render_template("login.html", menu=menu, title="Авторизация", form=form)
+    return render_template("login.html", menu=menu, title="Авторизация",
+                           form=form)
 
 
 @app.route("/register", methods=["POST", "GET"])
@@ -131,7 +134,8 @@ def register():
             return redirect(url_for('login'))
         else:
             flash("Ошибка при добавлении в БД", "error")
-    return render_template("register.html", menu=menu, title="Регистрация", form=form)
+    return render_template("register.html", menu=menu, title="Регистрация",
+                           form=form)
 
 
 @app.route('/logout')
