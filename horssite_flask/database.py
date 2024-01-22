@@ -52,6 +52,17 @@ def update_posts(cur, title, text, time, post_id):
 
 
 @database_connection
+def del_post(cur, post_id):
+    try:
+        cur.execute("DELETE FROM posts WHERE id = %s", (post_id,))
+        result = cur.fetchone()
+        return result
+    except:
+        print("Ошибка чтения из БД")
+        return False
+
+
+@database_connection
 def get_post(cur, post_id):
     try:
         cur.execute(f"SELECT title, text FROM posts \

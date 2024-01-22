@@ -13,7 +13,8 @@ from horssite_flask.forms import LoginForm, RegisterForm
 from horssite_flask.userlogin import UserLogin
 from horssite_flask.database import (get_menu, add_posts, get_post,
                                      get_all_posts, add_user,
-                                     get_email, update_avatar, update_posts)
+                                     get_email, update_avatar, update_posts,
+                                     del_post)
 
 
 load_dotenv()
@@ -85,7 +86,14 @@ def update_post(id_post):
             flash('Статья добавлена успешно', category='success')
         else:
             flash('Ошибка добавления статьи', category='error')
-    return render_template('update_post.html', menu=menu, title="Редактирование статьи")@app.route("/post/<int:id_post>/update", methods=["POST", "GET"])
+    return render_template('update_post.html', menu=menu, title="Редактирование статьи")
+
+
+@app.route("/post/<int:id_post>/delete")
+@login_required
+def delete_post(id_post):
+    del_post(id_post)
+    return redirect(url_for('index'))
 
 
 @app.route("/login", methods=["POST", "GET"])
