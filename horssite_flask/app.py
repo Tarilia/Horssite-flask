@@ -13,7 +13,7 @@ from horssite_flask.forms import LoginForm, RegisterForm
 from horssite_flask.userlogin import UserLogin
 from horssite_flask.database import (get_menu, add_posts, get_post,
                                      get_all_posts, add_user,
-                                     get_email, update_avatar)
+                                     get_email, update_avatar, update_posts)
 
 
 load_dotenv()
@@ -53,6 +53,7 @@ def add_post():
         if len(name) > 4 and len(post) > 10:
             add_posts(name, post, tm)
             flash('Статья добавлена успешно', category='success')
+            return redirect(url_for('index'))
         else:
             flash('Ошибка добавления статьи', category='error')
     return render_template('add_post.html', menu=menu,
@@ -67,7 +68,24 @@ def show_post(id_post):
     post = get_post(id_post)[1]
     if not title:
         abort(404)
-    return render_template('post.html', menu=menu, title=title, post=post)
+    return render_template('post.html', menu=menu, title=title, id_post=id_post, post=post)
+
+
+@app.route("/post/<int:id_post>/update", methods=["POST", "GET"])
+@login_required
+def update_post(id_post):
+    menu = get_menu()
+    if request.method == "POST":
+        name = request.form.get('name')
+        post = request.form.get('post')
+        tm = math.floor(time.time())
+        if len(name) > 4 and len(post) > 10:
+            update_posts(name, post, tm, id_post)
+            return redirect(url_for('index'))
+            flash('Статья добавлена успешно', category='success')
+        else:
+            flash('Ошибка добавления статьи', category='error')
+    return render_template('update_post.html', menu=menu, title="Редактирование статьи")@app.route("/post/<int:id_post>/update", methods=["POST", "GET"])
 
 
 @app.route("/login", methods=["POST", "GET"])

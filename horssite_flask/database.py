@@ -41,6 +41,17 @@ def add_posts(cur, title, text, time):
 
 
 @database_connection
+def update_posts(cur, title, text, time, post_id):
+    try:
+        cur.execute("UPDATE posts SET title = %s, text = %s, time = %s WHERE id = %s",
+                    (title, text, time, post_id))
+    except:
+        print("Ошибка обновления статьи в БД:")
+        return False
+    return True
+
+
+@database_connection
 def get_post(cur, post_id):
     try:
         cur.execute(f"SELECT title, text FROM posts \
