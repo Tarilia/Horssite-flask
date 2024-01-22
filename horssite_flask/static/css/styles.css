@@ -29,7 +29,7 @@ ul.mainmenu {
 }
 ul.mainmenu li {
 	float: left;
-	margin: 18px 40px 0 50px;
+	margin: 18px 40px 0 80px;
 }
 ul.mainmenu li.last {float: right;}
 
@@ -38,7 +38,7 @@ ul.mainmenu li a {
 	text-decoration: none;
 }
 ul.mainmenu li a:hover {
-	color: #FDA83D;
+	color: #FFDAB9;
 }
 
 div.content {
@@ -77,14 +77,16 @@ ul.list-posts {
 	padding: 0;
 	max-width: 1200px;
 }
+
 ul.list-posts li {
 	margin: 20px 0 0 0;
 	border: 1px solid #eee;
 }
 ul.list-posts .title {
 	margin: 0;
-	padding: 5px;
+	padding: 15px;
 	background: #F0FFF0;
+	font-weight: bold;
 }
 ul.list-posts .annonce {
 	margin: 0;
@@ -95,18 +97,18 @@ ul.list-posts .annonce {
 }
 
 .profile-ava {
-	width: 130px;
+	width: 300px;
 	text-align: center;
 	overflow: hidden;
 	background: #eee;
 	padding: 10px;
 }
-.profile-ava img {max-width: 150px; height: auto;}
+.profile-ava img {max-width: 300px; height: auto;}
 
 .profile-load {
 	margin-top: 10px;
 	overflow: hidden;
-	max-width: 150px;
+	max-width: 300px;
 }
 .profile-load input[type=submit], input[type=file] {
 	width: 100%;
@@ -126,4 +128,14 @@ ul.profile-info {
 }
 ul.profile-info li {margin-top: 10px;}
 
-
+.button {
+  font: bold 11px Arial;
+  text-decoration: none;
+  background-color: #B0E0E6;
+  color: #333333;
+  padding: 2px 6px 2px 6px;
+  border-top: 1px solid #CCCCCC;
+  border-right: 1px solid #333333;
+  border-bottom: 1px solid #333333;
+  border-left: 1px solid #CCCCCC;
+}
