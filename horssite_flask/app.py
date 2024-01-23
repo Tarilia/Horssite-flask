@@ -44,6 +44,18 @@ def index():
     return render_template('index.html', menu=menu, posts=posts)
 
 
+@app.route('/about')
+def about():
+    menu = get_menu()
+    return render_template('about.html', menu=menu, title="О сайте")
+
+
+@app.route('/contact')
+def contact():
+    menu = get_menu()
+    return render_template('contact.html', menu=menu, title="Контакты")
+
+
 @app.route("/add_post", methods=["POST", "GET"])
 def add_post():
     menu = get_menu()
